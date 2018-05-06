@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import HomePage from "./Home.jsx";
 import WrappedLogin from "./Login.jsx";
-import './App.css';
+import WrappedRegistrationForm from "./Register.jsx";
 import { Layout } from "antd";
 import { BrowserRouter as Router, Route} from "react-router-dom";
+import './App.css';
 const { Content } = Layout;
 
 class App extends Component {
@@ -14,7 +15,7 @@ class App extends Component {
           <Content>
             <Route exact path="/" component={ WrappedLogin }/>
             <Route path="/login" component={ WrappedLogin }/>
-            <Route path="/register" component={ WrappedLogin }/>
+            <Route path="/register" component={ WrappedRegistrationForm }/>
             <Route path="/home" component={ HomePage } />
          </Content>
         </Router> 
