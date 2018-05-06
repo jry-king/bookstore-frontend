@@ -5,9 +5,9 @@ class ShoppingList extends Component{
   constructor(props)
   {
     super(props);
-    this.state = { list: []};
+    this.state = { cart: this.props.data };
   }
-  handleClick = () => {
+  clearCart = () => {
     this.setState(this.state.list);
   }
   render(){
@@ -31,7 +31,7 @@ class ShoppingList extends Component{
     return (
       <div>
         <Table columns = { columns } dataSource={ this.state.list }/>
-        <Button type="primary" onClick={this.handleClick}>clear</Button>
+        <Button type="primary" onClick={ this.clearCart }>clear</Button>
       </div>
     );
   }

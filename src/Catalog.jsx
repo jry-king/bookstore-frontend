@@ -4,8 +4,8 @@ import "./App.css";
 
 function sortString(a,b)
 {
-  var len = Math.min(a.length, b.length);
-  for(var i = 0; i < len; i++)
+  let len = Math.min(a.length, b.length);
+  for(let i = 0; i < len; i++)
   {
     if(a[i] > b[i])
     {
@@ -24,7 +24,7 @@ class Catalog extends Component{
     super(props);
     this.state = {
       filterDropdownVisible: false,
-      data: [{Book: "The Lord of the Rings", Author: "J. R. R. Tolkien", Language: "English", Published: "1954-1955", Sales: "150 million", Price: 99.99}],
+      data: [],
       searchText: "",
       filtered: false,
     };
@@ -38,7 +38,7 @@ class Catalog extends Component{
     this.setState({
       filterDropdownVisible: false,
       filtered: !!searchText,
-      data: this.props.data.map((record) => {
+      data: this.state.data.map((record) => {
         const match = record.Book.match(reg);
         if (!match) {
           return null;
@@ -63,8 +63,12 @@ class Catalog extends Component{
       },
     });
     let result = await res.json();
-    var test = [{ Book : result[0]["bookname"] }];
-    this.setState({ data : test });
+    var booklist = [];
+    for(let i = 0; i < result.length; i++)
+    {
+      booklist.push({ Book: result[i]["bookname"], Author: result[i]["author"], Language: result[i]["language"] , Published: result[i]["published"] , Sales: result[i]["sales"] , Price: result[i]["price"] });
+    }
+    this.setState({ data : booklist });
   }
 
   render() {
@@ -122,7 +126,7 @@ class Catalog extends Component{
       dataIndex: " ",
       key: " ",
       render: (text, record, index) => {
-        return (<Button type="primary" dataindex={ index } onClick={ this.onShop }>add to cart</Button>);
+        return (<Button type="primary" name={ record.Book } price={ record.Price } onClick={ this.onShop }>add to cart</Button>);
       },
     }];
     return (
