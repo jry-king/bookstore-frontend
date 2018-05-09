@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Catalog from "./Catalog.jsx";
 import ShoppingList from "./Shoppinglist.jsx";
+import BookPage from "./Book.jsx";
 import './App.css';
 import { Menu, Layout, Carousel } from "antd";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -10,7 +11,10 @@ class HomePage extends Component{
     constructor(props) 
     {
         super(props);
-        this.state = { cart: [] };
+        this.state = { displayId: 0 };
+    }
+    jumpToDetail = (bookid) => {
+        this.setState({displayId: bookid});
     }
     render()
     {
@@ -32,8 +36,9 @@ class HomePage extends Component{
                                 <div><h1>Pick your desired book in the catalog and check the shopping cart.</h1></div>
                                 <div><h1>Help yourself and enjoy!</h1></div>
                             </Carousel>} />
-                            <Route path="/catalog" component={ Catalog } />
+                            <Route path="/catalog" render={() => <Catalog showDetail={this.jumpToDetail}/>} />
                             <Route path="/mycart" component={ ShoppingList } />
+                            <Route path="/bookpage" render={() => <BookPage bookid={this.state.displayId}/>} />
                         </Content>
                     </div>
                 </Router>

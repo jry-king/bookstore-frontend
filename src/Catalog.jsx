@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Table, Input, Button, Icon } from "antd";
+import { withRouter } from "react-router-dom";
 import "./App.css";
 
 function sortString(a,b)
@@ -70,8 +71,9 @@ class Catalog extends Component{
     }
     this.setState({ data : booklist });
   }
-  showDetail = (e) => {
-    
+  onShowDetail = (e) => {
+    this.props.showDetail(e.target.getAttribute("Bookid"));
+    this.props.history.push("/bookpage");
   }
 
   render() {
@@ -129,16 +131,16 @@ class Catalog extends Component{
       dataIndex: "BookIndex",
       key: "BookIndex",
       render: (text, record, index) => {
-        return (<Button type="primary" bookid={ text } onClick={ this.showDetail }>Go to book page</Button>);
+        return (<Button type="primary" bookid={ text } onClick={ this.onShowDetail }>Go to book page</Button>);
       },
     }];
     return (
       <div className="App">
-        <Table columns={ columns } dataSource={ this.state.data } />
-        <Button type="primary" onClick={ this.onList }>get book</Button>
+        <Table rowKey={record => record.BookIndex} columns={columns} dataSource={this.state.data} />
+        <Button type="primary" onClick={this.onList}>get book</Button>
       </div>
     );
   }
 }
 
-export default Catalog;
+export default withRouter(Catalog);
