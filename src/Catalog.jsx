@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Table, Input, Button, Icon } from "antd";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./App.css";
 
 function sortString(a,b)
@@ -63,12 +64,15 @@ class Catalog extends Component{
       },
     });
     let result = await res.json();
-    var booklist = [];
+    let booklist = [];
     for(let i = 0; i < result.length; i++)
     {
-      booklist.push({ Book: result[i]["bookname"], Author: result[i]["author"], Language: result[i]["language"] , Published: result[i]["published"] , Sales: result[i]["sales"] , Price: result[i]["price"] });
+      booklist.push({ Book: result[i]["bookname"], Author: result[i]["author"], Language: result[i]["language"], Published: result[i]["published"], Sales: result[i]["sales"], Price: result[i]["price"], BookIndex: result[i]["id"] });
     }
     this.setState({ data : booklist });
+  }
+  showDetail = (e) => {
+    
   }
 
   render() {
@@ -123,10 +127,10 @@ class Catalog extends Component{
       sorter: (a, b) => a.Price - b.Price,
     }, {
       title: " ",
-      dataIndex: " ",
-      key: " ",
+      dataIndex: "BookIndex",
+      key: "BookIndex",
       render: (text, record, index) => {
-        return (<Button type="primary" name={ record.Book } price={ record.Price } onClick={ this.onShop }>add to cart</Button>);
+        return (<Button type="primary" index={ index } text={ text } record={ record } onClick={ this.showDetail }>Go to book page</Button>);
       },
     }];
     return (

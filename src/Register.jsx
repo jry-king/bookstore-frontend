@@ -1,32 +1,8 @@
 import React, { Component } from "react";
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
+import { Form, Input, Tooltip, Icon, Select, Checkbox, Button, } from 'antd';
+import { withRouter } from "react-router-dom";
 const FormItem = Form.Item;
 const Option = Select.Option;
-const AutoCompleteOption = AutoComplete.Option;
-
-const residences = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua Men',
-    }],
-  }],
-}];
 
 class RegistrationForm extends Component {
 
@@ -45,24 +21,23 @@ class RegistrationForm extends Component {
   phoneChange = (e) => { this.setState({ phone: e.target.value }); }
 
   handleSubmit = async (e) => {
-    let res = await fetch("http://localhost:8080/UserManager",{
+    let url = "http://localhost:8080/UserManager?username=" + this.state.username + "&password=" + this.state.password + "&email=" + this.state.email + "&phone=" + this.state.phone;
+    let res = await fetch(url,{
       method: "post",
       headers: {
-        "Accept": "application/json",
+        "Accept": "text/html",
         "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
       },
     });
-    let result = await res.json();
-    let valid = false;
-    for(let i = 0; i < result.length; i++)
+    let result = await res.text();
+    if("success" === result)
     {
-        if(this.state.username === result[i]["username"] && this.state.password === result[i]["password"])
-        {
-            valid = true;
-            this.props.history.push("/home");
-        }
+      this.props.history.push("/home");
     }
-    if(!valid){alert("invalid user!");}
+    else
+    {
+      alert("register failed!");
+    }
   }
   handleConfirmBlur = (e) => {
     const value = e.target.value;
@@ -85,7 +60,6 @@ class RegistrationForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -186,7 +160,7 @@ class RegistrationForm extends Component {
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Please input your phone number!' }],
           })(
-            <Input addonBefore={prefixSelector} style={{ width: '100%' }} onChange={ this.emailChange } />
+            <Input addonBefore={prefixSelector} style={{ width: '100%' }} onChange={ this.phoneChange } />
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
@@ -206,4 +180,4 @@ class RegistrationForm extends Component {
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
 
-export default WrappedRegistrationForm;
+export default withRouter(WrappedRegistrationForm);
