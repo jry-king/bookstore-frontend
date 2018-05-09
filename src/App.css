@@ -43,3 +43,31 @@
 .login-form-button {
   width: 100%;
 }
+
+.bookdetail {
+  text-align: center;
+  border-style: solid;
+  border-width: thin;
+}
+.sider {
+  background: #66ccff;
+  border-style: solid;
+  border-width: thin;
+}
+.header {
+  background: #9999ff;
+  border-style: solid;
+  border-width: thin;
+  font-size: large;
+  font-weight: bold;
+}
+.footer {
+  background: #9999ff;
+  border-style: solid;
+  border-width: thin;
+}
+.content {
+  background: #9999ff;
+  border-style: solid;
+  border-width: thin;
+}

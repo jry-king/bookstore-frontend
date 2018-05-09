@@ -11,10 +11,10 @@ class HomePage extends Component{
     constructor(props) 
     {
         super(props);
-        this.state = { displayId: 0 };
+        this.state = { bookToDisplay: {} };
     }
-    jumpToDetail = (bookid) => {
-        this.setState({displayId: bookid});
+    jumpToDetail = (book) => {
+        this.setState({bookToDisplay: book});
     }
     render()
     {
@@ -38,7 +38,7 @@ class HomePage extends Component{
                             </Carousel>} />
                             <Route path="/catalog" render={() => <Catalog showDetail={this.jumpToDetail}/>} />
                             <Route path="/mycart" component={ ShoppingList } />
-                            <Route path="/bookpage" render={() => <BookPage bookid={this.state.displayId}/>} />
+                            <Route path="/bookpage" render={() => <BookPage book={this.state.bookToDisplay}/>} />
                         </Content>
                     </div>
                 </Router>

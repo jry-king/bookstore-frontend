@@ -71,9 +71,28 @@ class Catalog extends Component{
     }
     this.setState({ data : booklist });
   }
-  onShowDetail = (e) => {
-    this.props.showDetail(e.target.getAttribute("Bookid"));
+  onShowDetail = async (e) => {
+    e.persist();
+    let res = await fetch("http://localhost:8080/Booklist",{
+      method: "get",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+      },
+    });
+    let result = await res.json();
+    let book = {};
+    for(let i = 0; i < result.length; i++)
+    {
+        // eslint-disable-next-line
+        if(e.target.getAttribute("Bookid") == result[i]["id"])
+        {
+            book = { Book: result[i]["bookname"], Author: result[i]["author"], Language: result[i]["language"], Published: result[i]["published"], Sales: result[i]["sales"], Price: result[i]["price"], BookIndex: result[i]["id"] };
+        }
+    }
+    
     this.props.history.push("/bookpage");
+    this.props.showDetail(book);
   }
 
   render() {
