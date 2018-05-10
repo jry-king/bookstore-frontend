@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, Layout } from "antd";
+import { Table, Button, Layout, notification } from "antd";
 import './App.css';
 const { Footer, Content } = Layout;
 
@@ -37,8 +37,18 @@ class ShoppingList extends Component{
     });
     this.setState({ cart: [], total: 0 });
   }
-  payBill = (e) => {
-    alert("successfully paid!");
+  payBill = async (e) => {
+    await fetch("http://localhost:8080/CartManager?operation=removeall",{
+      method: "post",
+      headers: {
+        "Accept": "text/html",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+      },
+    });
+    notification.open({
+      message: "Successfully paid!",
+      description: "Your payment has been done.",
+  });
     this.setState({ cart: [], total: 0 });
   }
   render(){
