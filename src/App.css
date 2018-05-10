@@ -29,9 +29,14 @@
   background: #364d79;
   overflow: hidden;
 }
-
 .slick-slide h1 {
   color: #fff;
+}
+.sider1 {
+  float: right;
+  background: #66ccff;
+  border-style: solid;
+  border-width: thin;
 }
 
 .login-form {

@@ -26,6 +26,7 @@ class Login extends Component{
             if(this.state.username === result[i]["username"] && this.state.password === result[i]["password"])
             {
                 valid = true;
+                this.props.setUser(result[i]["userid"], result[i]["username"]);
                 this.props.history.push("/home");
             }
         }

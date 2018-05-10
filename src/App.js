@@ -6,14 +6,22 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
 
 class App extends Component {
+  constructor()
+  {
+    super();
+    this.state = { userid: 0, username: "" };
+  }
+  setUserId = (id, name) => {
+    this.setState({ userid: id, username: name });
+  }
   render() {
     return (
         <Router>
           <Switch>
-            <Route exact path="/" component={ WrappedLogin }/>
-            <Route path="/login" component={ WrappedLogin }/>
-            <Route path="/register" component={ WrappedRegistrationForm }/>
-            <Route path="/home" component={ HomePage } />
+            <Route exact path="/" render={() => <WrappedLogin setUser={this.setUserId} />} />
+            <Route path="/login" render={() => <WrappedLogin setUser={this.setUserId} />} />
+            <Route path="/register" component={ WrappedRegistrationForm } />
+            <Route path="/home" render={() => <HomePage userid={this.state.userid} username={this.state.username} />} />
           </Switch>
         </Router> 
     );
