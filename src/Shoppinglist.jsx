@@ -1,14 +1,45 @@
 import React, { Component } from "react";
-import { Table, Button } from "antd";
+import { Table, Button, Layout } from "antd";
+import './App.css';
+const { Footer, Content } = Layout;
 
 class ShoppingList extends Component{
-  constructor(props)
+  constructor()
   {
-    super(props);
-    this.state = { cart: this.props.data };
+    super();
+    this.state = { cart: [], total: 0 };
   }
-  clearCart = () => {
-    this.setState(this.state.list);
+  getCart = async (e) => {
+    let res = await fetch("http://localhost:8080/CartManager",{
+      method: "get",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+      },
+    });
+    let result = await res.json();
+    let itemlist = [];
+    let totalOfAll = 0;
+    for(let i = 0; i < result.length; i++)
+    {
+      itemlist.push({ Book: result[i]["book"],  Price: result[i]["price"], Number: result[i]["number"], TotalPrice: result[i]["price"]*result[i]["number"] });
+      totalOfAll += result[i]["price"]*result[i]["number"];
+    }
+    this.setState({ cart : itemlist, total: totalOfAll });
+  }
+  clearCart = async (e) => {
+    await fetch("http://localhost:8080/CartManager?operation=removeall",{
+      method: "post",
+      headers: {
+        "Accept": "text/html",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+      },
+    });
+    this.setState({ cart: [], total: 0 });
+  }
+  payBill = (e) => {
+    alert("successfully paid!");
+    this.setState({ cart: [], total: 0 });
   }
   render(){
     const columns = [{
@@ -29,10 +60,14 @@ class ShoppingList extends Component{
       key: "TotalPrice",
     }];
     return (
-      <div>
-        <Table columns = { columns } dataSource={ this.state.list }/>
-        <Button type="primary" onClick={ this.clearCart }>clear</Button>
-      </div>
+      <Layout className="App">
+        <Content>
+          <Table columns={columns} dataSource={this.state.cart} />
+          <Button type="primary" onClick={this.getCart}>show items</Button>
+          <Button type="primary" onClick={this.clearCart}>clear</Button>
+        </Content>
+        <Footer>All in total: {this.state.total} <Button type="primary" onClick={this.payBill}>Pay now</Button></Footer>
+      </Layout>
     );
   }
 }
