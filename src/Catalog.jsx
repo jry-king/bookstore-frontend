@@ -90,7 +90,6 @@ class Catalog extends Component{
             book = { Book: result[i]["bookname"], Author: result[i]["author"], Language: result[i]["language"], Published: result[i]["published"], Sales: result[i]["sales"], Price: result[i]["price"], BookIndex: result[i]["id"] };
         }
     }
-    
     this.props.history.push("/bookpage");
     this.props.showDetail(book);
   }

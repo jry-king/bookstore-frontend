@@ -28,7 +28,7 @@ class ShoppingList extends Component{
     this.setState({ cart : itemlist, total: totalOfAll });
   }
   clearCart = async (e) => {
-    await fetch("http://localhost:8080/CartManager?operation=removeall",{
+    await fetch("http://localhost:8080/CartManager?operation=removeall&userid=0&book=null&price=0",{
       method: "post",
       headers: {
         "Accept": "text/html",
@@ -38,7 +38,7 @@ class ShoppingList extends Component{
     this.setState({ cart: [], total: 0 });
   }
   payBill = async (e) => {
-    await fetch("http://localhost:8080/CartManager?operation=removeall",{
+    await fetch("http://localhost:8080/CartManager?operation=removeall&userid=0&book=null&price=0",{
       method: "post",
       headers: {
         "Accept": "text/html",

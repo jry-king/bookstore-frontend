@@ -4,7 +4,7 @@ import ShoppingList from "./Shoppinglist.jsx";
 import BookPage from "./Book.jsx";
 import './App.css';
 import { Menu, Layout, Carousel, Button } from "antd";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, withRouter } from "react-router-dom";
 const { Header, Content, Sider } = Layout;
 
 class HomePage extends Component{
@@ -21,7 +21,7 @@ class HomePage extends Component{
         this.setState({bookToDisplay: book});
     }
     Logout = () => {
-        alert(this.state.currentUsername);
+        this.props.history.push("/login");
     }
     render()
     {
@@ -57,4 +57,4 @@ class HomePage extends Component{
     }
 }
 
-export default HomePage;
+export default withRouter(HomePage);
