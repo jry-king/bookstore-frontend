@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { Layout, Button, notification } from "antd";
+import img1 from "./cover/TheLordoftheRings.jpg";
 import "./App.css";
 const { Header, Footer, Sider, Content } = Layout;
 
 class BookPage extends Component{
+    constructor(props)
+    {
+        super(props);
+        this.state = { cover : "" };
+    }
     addBook = async (e) => {
         let url = "http://localhost:8080/CartManager?operation=add&userid=1&book=" + this.props.book.Book + "&price=" + this.props.book.Price.toString();
         let res = await fetch(url, {
@@ -29,11 +35,24 @@ class BookPage extends Component{
             });
         }
     }
+    getCover = async (e) => {
+        let res = await fetch("localhost:8080/BookCover?bookid=" + this.props.book.BookIndex.toString(), {
+            method: "get",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+            },
+        });
+        let result = await res.json();
+        alert(result.cover);
+        this.setState({ cover : result.cover });
+    }
     render()
     {
+        let coverlist = { "./cover/TheLordoftheRings.jpg" : img1 };
         return(
             <Layout className="bookdetail">
-                <Sider className="sider">image</Sider>
+                <Sider className="sider" width="700" ><img src={coverlist[this.state.cover]} alt="cover here" /><Button type="primary" onClick={this.getCover}>get cover</Button></Sider>
                 <Layout>
                     <Header className="header">{this.props.book.Book}</Header>
                     <Content className="content">Author: {this.props.book.Author}<br/>Language: {this.props.book.Language}<br/>Publish time: {this.props.book.Published}<br/>Sales: {this.props.book.Sales} </Content>

@@ -148,7 +148,7 @@ class Catalog extends Component{
       title: " ",
       dataIndex: "BookIndex",
       key: "BookIndex",
-      render: (text, record, index) => {
+      render: (text) => {
         return (<Button type="primary" bookid={ text } onClick={ this.onShowDetail }>Go to book page</Button>);
       },
     }];

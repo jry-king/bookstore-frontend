@@ -38,6 +38,39 @@ class ShoppingList extends Component{
     this.setState({ cart: [], total: 0 });
   }
   payBill = async (e) => {
+    await fetch("http://localhost:8080/OrderManager?userid=1&date=2018/6/23&totalprice=" + this.state.total.toString(),{
+      method: "post",
+      headers: {
+        "Accept": "text/html",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+      },
+    });
+    let res = await fetch("http://localhost:8080/OrderManager",{
+          method: "get",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+          },
+        });
+    let result = await res.json();
+    let orderid = 0;
+    for(let i = 0; i < result.length; i++)
+    {
+        if(orderid < result[i]["id"])
+        {
+          orderid = result[i]["id"];
+        }
+    }
+    for(let i = 0; i < this.state.cart.length; i++)
+    {
+      await fetch("http://localhost:8080/OrderItemManager?orderid=" + orderid.toString() + "&number=" + this.state.cart[i].Number.toString() + "&book=" + this.state.cart[i].Book + "&price=" + this.state.cart[i].Price.toString(), {
+        method: "post",
+        headers: {
+          "Accept": "text/html",
+          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        },
+      });
+    }
     await fetch("http://localhost:8080/CartManager?operation=removeall&userid=0&book=null&price=0",{
       method: "post",
       headers: {

@@ -12,7 +12,7 @@ class Login extends Component{
         };
       }
     handleSubmit = async (e) => {
-        let res = await fetch("http://localhost:8080/UserManager",{
+        let res = await fetch("http://localhost:8080/UserManager1",{
           method: "get",
           headers: {
             "Accept": "application/json",
